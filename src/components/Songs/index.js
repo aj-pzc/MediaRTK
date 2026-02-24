@@ -1,6 +1,11 @@
 import React, {Component} from 'react';
 
 class SongInfo extends Component {
+    
+    componentDidMount() {
+        console.log(`La canción "${this.props.title}" se ha cargado correctamente`);
+    }
+
     render() {
         const { title, artist, duration } = this.props;
         return (
