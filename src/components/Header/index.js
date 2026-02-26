@@ -1,3 +1,5 @@
+import React from "react";
+
 const Header = ({appName}) => {
     return (
         <header className="header">
