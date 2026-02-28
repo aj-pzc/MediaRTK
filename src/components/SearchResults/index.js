@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import fav from '../media/fav.svg';
+import addFav from '../media/fav.svg';
+import isFav from '../media/fav-added.svg';
 
-
-const SearchResults = ({ songs, onAddFav}) => {
+const SearchResults = ({ songs, onAddFav, favorites}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredSongs, setFilteredSongs] = useState([]);
 
@@ -53,7 +53,9 @@ const SearchResults = ({ songs, onAddFav}) => {
 
             {searchTerm.trim() !== "" ? (
                 filteredSongs.length > 0 ? (
-                    filteredSongs.map((song) => (
+                    filteredSongs.map((song ) => {
+                        const isFavorite = favorites.some(fav => fav.id === song.id);
+                        return(
                         <article key={song.id} className="search__results">
                             <div className="search__results-title">
                                 <p>{song.title}</p>                        
@@ -68,17 +70,17 @@ const SearchResults = ({ songs, onAddFav}) => {
                                 <p>{song.duration}</p>
                             </div>
                             <div className="search__results-fav" onClick={() => onAddFav(song)}>
-                                <button ><img src={fav} alt="favIcon" id="AddtoFAv"/></button>
+                                <button ><img src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFAv"/></button>
                             </div>
                         </article>
-                    ))
+                        )                       
+                    })
                 ) : (
                     <p className="error-message">Búsqueda no encontrada. Por favor, intenta de nuevo.</p>
                 )
             ) : (
                 <p className="search-prompt">Ingresa tu Busqueda</p>
-            )}
-            
+            )}            
         </div>
     );
 }

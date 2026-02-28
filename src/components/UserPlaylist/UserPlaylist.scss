@@ -39,10 +39,31 @@
     &-artist,
     &-album,
     &-duration{
-      width: 33%;
+      width: 20%;
       height: fill-available;
       align-content: center;
     }
-  }
 
+    &-fav{
+      button{
+        padding:0;
+        margin:0;
+        border:none;
+        background-color: transparent;
+
+        &:hover{
+          cursor:pointer;
+          transform:translateY(-3px);
+        }
+        &:active{
+          transform: scale(0.7    );
+        }
+      }
+
+      img{
+        width: 30px;
+        height: auto;
+      }
+    }
+  }
 }

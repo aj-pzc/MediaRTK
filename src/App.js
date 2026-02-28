@@ -27,8 +27,15 @@ function App() {
 
   const [favorites, setFavorites] = useState([]);
 
-  const addToFavorites = (song) => {
-    if (!favorites.some(fav => fav.id === song.id)) {
+  const FavoritesToggle = (song) => {
+
+    
+    if (favorites.some(fav => fav.id === song.id)) {
+
+      const updateFavorites = favorites.filter(fav => fav.id !== song.id)
+      setFavorites(updateFavorites)
+
+    } else{
       setFavorites([...favorites, song]);
     }
   };
@@ -36,9 +43,9 @@ function App() {
   return (
     <div className="App">
       <Header appName="MediaPlayerApp" />  
-      <SearchResults songs={songsDB} onAddFav={addToFavorites} />
-      <UserPlaylist favorites={favorites} />
-      <AllSongs songs={songsDB} onAddFav={addToFavorites} /> 
+      <SearchResults songs={songsDB} onAddFav={FavoritesToggle}  favorites={favorites}/>
+      <UserPlaylist favorites={favorites} onAddFav={FavoritesToggle} />
+      <AllSongs songs={songsDB} onAddFav={FavoritesToggle} favorites={favorites} /> 
     </div>
   );
 }
