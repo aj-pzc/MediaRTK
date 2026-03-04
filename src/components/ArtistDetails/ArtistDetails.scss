@@ -1,0 +1,76 @@
+.artist-profile{
+    display: flex;
+    background-color: #eeecec;
+    flex-direction: column;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 110rem;
+    text-align: center; 
+    height: auto;
+    max-height: 55rem;
+    overflow-y: scroll;
+
+    &__header{
+        
+        position: sticky;  
+        top:0px;
+        z-index: 1000;
+        background-color: #eeecec;
+        padding-bottom: 15px;
+        h1{
+            margin: 20px 0 7px 0;
+        }
+        p{
+            margin: 0;
+            font-size: .8rem;
+        }
+    }
+
+    a{
+        color: #000000;
+        :hover{
+        cursor:pointer;
+            transform: scale(0.95);
+        }
+        :active{
+            color: #2f143f;
+            transform: scale(0.9);
+        }
+    }
+
+    :link{
+        text-decoration: none;
+    } 
+    
+    h3{
+        margin:0 0 15px 0;
+
+    }
+    &__discography{
+        padding: 0 20px 20px 20px;
+
+    }
+}
+
+.albums__grid{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px 20px;
+
+    h3, h4, p{
+        margin:0 0 5px 0;
+
+    }
+}
+
+.albums__card{
+    box-shadow: 3px 3px #3603582d;
+    border-radius: 2%;
+    background-color: #f1eff8;
+
+    &:hover{
+        transform:translateY(-5px); 
+        transition: transform 300ms ease-out
+
+    }
+}

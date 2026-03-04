@@ -7,7 +7,7 @@
   max-width: 110rem;
   text-align: center; 
   height: auto;
-  max-height: 45rem;
+  max-height: 55rem;
   overflow-y: scroll;
 
   &__header{
@@ -15,7 +15,7 @@
     top:0;
     z-index: 1000;
     background-color: #eeecec;
-    padding: 30px 0;
+    padding-top: 30px;
 
 
     h2{
@@ -24,27 +24,47 @@
     }
   }
 
-  &__each {
-    border-radius: 8px;
+  &__each{
+    display: flex;
+    flex-direction: column;  
+
+    &-item{
     padding: 0;
     margin: 5px;
     width: auto;
     height: 100px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-evenly;
     align-items: center;
+      &:hover {
+        background-color: #e5e5e5;
+        transform: scale(1.002);
+      }
+    }
 
-    &-title,
+   
     &-artist,
     &-album,
-    &-duration{
+    &-track,
+    &-genre{
       width: 20%;
       height: fill-available;
       align-content: center;
     }
+    
+    &-cover{
+      width: 10%;
+      img{
+        width: auto;
+        max-width: 100px;;
+      }
+    }
 
     &-fav{
+      width: 10%;
+      height: fill-available;
+      align-content: center;
       button{
         padding:0;
         margin:0;
@@ -62,8 +82,21 @@
 
       img{
         width: 30px;
-        height: auto;
+        height: auto;          
       }
     }
   }
+}
+
+#PlaylistHeader{
+  position: sticky;  
+  top:60px;
+  z-index: 1000;
+  background-color: #eeecec;
+  border-bottom: 2px solid #ccc;
+  height: 45px;
+  transform: none;
+  width: 100%;
+  margin: 0;
+
 }

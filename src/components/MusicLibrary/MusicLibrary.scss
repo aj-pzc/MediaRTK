@@ -1,0 +1,172 @@
+
+.allSongs{
+  background-color: #eeecec;
+  border-radius: 8px;
+  padding: 0 20px 20px 20px;
+  margin: 20px auto;
+  max-width: 110rem;
+  text-align: center; 
+  height: auto;
+  max-height: 55rem;
+  overflow-y: scroll;
+
+  &__each{
+    display: flex;
+    flex-direction: column;  
+
+    &-item{
+    padding: 0;
+    margin: 5px;
+    width: auto;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    
+      &:hover {
+        background-color: #e5e5e5;
+        transform: scale(1.002);
+      }
+    }
+
+   
+    &-artist,
+    &-album,
+    &-track,
+    &-genre{
+      width: 20%;
+      height: fill-available;
+      align-content: center;
+    }
+    
+    &-cover{
+      width: 10%;
+      img{
+        width: auto;
+        max-width: 80px;;
+      }
+    }
+
+    &-fav{
+      align-content: center;
+      width: 10%;
+
+      button{
+        padding:0;
+        margin:0;
+        border:none;
+        background-color: transparent;
+
+        &:hover{
+          cursor:pointer;
+          transform:translateY(-3px);
+        }
+        &:active{
+          transform: scale(0.7);
+        }
+      }
+
+      img{
+        width: 30px;
+        height: auto;          
+      }
+    }
+  }
+  
+  &__search{
+    background-color: #eeecec;
+    border-radius: 8px;
+    max-width: 110rem;
+    text-align: center; 
+    position: sticky;
+    top:0;
+    z-index: 1000;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;    
+
+    h2{
+      margin:0;
+    }    
+  }
+
+  &__box{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  background-color:#eeecec;
+  padding-bottom: 10px;
+;
+    &-input{
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      width: 75rem;
+      height: 2.5rem;
+      font-size: 1.1rem;
+      padding-left: 15px;
+    }
+
+    &-button{
+      background-color: #382929;
+      color:#eeecec;
+      font-size: 1.1rem;
+      padding: 5px 15px;
+      border-radius: 25px;
+      height: 2.5rem;
+      text-align: center;
+
+      &:hover{
+        cursor:pointer;
+        transform:translateY(-3px);
+        background-color: #413f3f;
+      }
+
+      &:active{
+        transform: scale(0.97);
+        background-color: #575555;
+      }
+
+    }  
+  }
+
+  a{
+    color: #000000;
+    :hover{
+      cursor:pointer;
+      transform: scale(0.95);
+    }
+    :active{
+      color: #2f143f;
+     transform: scale(0.9);
+    }
+  }
+
+  :link{
+    text-decoration: none;
+  }
+}
+
+#AllSongHeader{
+  position: sticky;  
+  top:115px;
+  z-index: 1000;
+  background-color: #eeecec;
+  border-bottom: 2px solid #ccc;
+  height: 45px;
+  transform: none;
+  width: 100%;
+  margin: 0;
+
+  
+  P{
+    margin: 0;
+  }
+
+
+}
+
+
+
