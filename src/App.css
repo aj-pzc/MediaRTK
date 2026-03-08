@@ -1,8 +1,6 @@
-@import './components/MusicLibrary/MusicLibrary.css';
-@import './components/UserPlaylist/UserPlaylist.css';
-@import './components/Header/Header.css';
-@import './components/ArtistDetails/ArtistDetails.css';
-@import './components/AlbumDetails/AlbumDetails.css';
+@tailwind components;
+@tailwind utilities;
+@tailwind base;
 * {
   box-sizing: border-box;
   font-family: "Audiowide", sans-serif;

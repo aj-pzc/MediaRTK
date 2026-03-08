@@ -1,33 +1,35 @@
 import React from "react";
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
+import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
+import { ListHeader, UserList, ListContainer, ListItem, ListItemHeader, ItemBox, Cover } from "./styles";
 
 const UserPlaylist = ({ favorites, onAddFav}) => {
     return (
-        <section className="UserPlayList">
-            <div className="UserPlayList__header">
+        <UserList >
+            <ListHeader>
                 <h2>Mi Playlist</h2>
-            </div>
+            </ListHeader>
 
-            <div className="UserPlayList__each">
+            <ListContainer>
 
-                <article className="allSongs__each-item" id="PlaylistHeader">
-                        <div className="UserPlayList__each-cover">
+                <ListItemHeader className="allSongs__each-item" id="PlaylistHeader">
+                        <Cover>
                             <p><strong>Album Cover</strong></p>
-                        </div>
-                        <div className="UserPlayList__each-track">
+                        </Cover>
+                        <ItemBox>
                            <p><strong>Track</strong></p>
-                        </div>                                               
-                        <div className="UserPlayList__each-artist">
+                        </ItemBox>                                               
+                        <ItemBox>
                             <p><strong>Artist</strong></p>
-                        </div>
-                        <div className="UserPlayList__each-album">
+                        </ItemBox>
+                        <ItemBox >
                             <p><strong>Album</strong></p>
-                        </div> 
-                        <div className="UserPlayList__each-fav">
+                        </ItemBox> 
+                        <FavBox >
                             <p><strong>Favorite</strong></p>
-                        </div>                        
-                </article>
+                        </FavBox>                        
+                </ListItemHeader>
 
 
                 
@@ -38,33 +40,33 @@ const UserPlaylist = ({ favorites, onAddFav}) => {
                     const isFavorite = favorites.some(fav => fav.id === song.id);
                     
                     return(
-                        <article key={id} className="UserPlayList__each-item">
+                        <ListItem key={id} className="UserPlayList__each-item">
                             <div  className="UserPlayList__each-cover">
                                  <img src={cover} alt={album}></img>
                             </div>
-                            <div className="UserPlayList__each-track">
+                            <ItemBox className="UserPlayList__each-track">
                                 <p><strong>{track}</strong></p>
-                            </div>
-                            <div className="UserPlayList__each-artist">
+                            </ItemBox>
+                            <ItemBox className="UserPlayList__each-artist">
                                 <p>{artist}</p>
-                            </div>
-                            <div className="UserPlayList__each-album">
+                            </ItemBox>
+                            <ItemBox className="UserPlayList__each-album">
                                 <p>{album}</p>
-                            </div>
-                            <div className="UserPlayList__each-fav" onClick={() => onAddFav(song)}>
-                                <button ><img src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></button>
-                            </div>
-                        </article>
+                            </ItemBox>
+                            <FavBox onClick={() => onAddFav(song)}>
+                                <FavButton><FavIcon src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></FavButton>
+                            </FavBox>
+                        </ListItem>
                     )
                 }) 
             ) : (
                 <p>No hay favoritos aún.</p>
                 )}
                 
-            </div>
+            </ListContainer>
 
             
-        </section>
+        </UserList>
     );
 };
 

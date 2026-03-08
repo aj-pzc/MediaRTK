@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import useGetDetails from '../../hooks/useGetDetails.js';
 import { Link } from "react-router-dom";
+import { AlbumCover, AlbumGrid, AlbumSleeve, ArtistDiscography, ArtistGenre, ArtistName, ArtistProfile, ProfileContainer } from "./styles.js";
 
 
 const ArtistDetails = () => {
@@ -14,27 +15,27 @@ const ArtistDetails = () => {
     const albums = data.slice(1);
 
     return(
-       <div className="artist-profile">
-            <header className="artist-profile__header">
-                <h1>{artistInfo.artistName}</h1>
-                <p>{artistInfo.primaryGenreName}</p>
-            </header>
+       <ArtistProfile>
+            <ProfileContainer className="artist-profile__header">
+                <ArtistName>{artistInfo.artistName}</ArtistName>
+                <ArtistGenre>{artistInfo.primaryGenreName}</ArtistGenre>
+            </ProfileContainer>
 
-            <section className="artist-profile__discography">
+            <ArtistDiscography className="artist-profile__discography">
                 <h3>Álbumes</h3>
-                <div className="albums__grid">
+                <AlbumGrid>
                     {albums.map((album) => (
-                        <article key={album.collectionId} className="albums__card">
+                        <AlbumSleeve key={album.collectionId} className="albums__card">
                             <Link to={`/album/${album.collectionId}`}>
-                                <img src={album.artworkUrl100.replace('100x100', '300x300')} alt={album.collectionName} />
+                                <AlbumCover src={album.artworkUrl100.replace('100x100', '300x300')} alt={album.collectionName} />
                                 <h4>{album.collectionName}</h4>
                                 <p>{album.releaseDate.slice(0, 4)}</p>
                             </Link>
-                        </article>
+                        </AlbumSleeve>
                     ))}
-                </div>
-            </section>
-        </div>
+                </AlbumGrid>
+            </ArtistDiscography>
+        </ArtistProfile>
     );
 };
 

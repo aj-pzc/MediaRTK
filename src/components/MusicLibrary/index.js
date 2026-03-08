@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
 import { Link } from "react-router-dom";
+import { AllSongs, EachSong, SearchBar, SearchBox, SearchBtn, SearchContainer, SongCover, SongItem, SongsContainer, SongsHeaders } from "./styles";
+import { FavButton, FavIcon } from "../../Theme/GlobalStyles";
 
 const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }) => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -23,53 +25,52 @@ const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }
     };
 
     return (
-        <section className="allSongs">
-            <div className="allSongs__search">
+        <AllSongs >
+            <SearchContainer >
                 <h2>Explorador de Música</h2>
 
-                <div className="allSongs__box">
-                    <input 
-                        className="allSongs__box-input"
+                <SearchBox>
+                    <SearchBar
                         type="text"
                         id="Searchbox" 
-                        placeholder="Filtra aquí o presiona Enter para buscar nuevo artista..." 
+                        placeholder="Filtra aquí o presiona Enter para buscar..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && apiSearch()}
-                    />
-                    <button className="allSongs__box-button" onClick={apiSearch}>
+                    />                        
+                    <SearchBtn onClick={apiSearch} >
                         Buscar
-                    </button>                    
-                </div>
-            </div>
+                    </SearchBtn>                    
+                </SearchBox>
+            </SearchContainer>
             {isLoading ? (
                 <p className="loading-msg">Cargando biblioteca...</p>
             ) : error ? (
                 <p> {error}</p>
 
             ):(
-                <div className="allSongs__each" >
+                <SongsContainer>
 
-                    <article className="allSongs__each-item" id="AllSongHeader">
-                        <div className="allSongs__each-cover">
+                    <SongsHeaders >
+                        <SongCover>
                             <p><strong>Album Cover</strong></p>
-                        </div>
-                        <div className="allSongs__each-track">
+                        </SongCover>
+                        <SongItem>
                            <p><strong>Track</strong></p>
-                        </div>   
-                        <div className="allSongs__each-album">
+                        </SongItem>   
+                        <SongItem>
                             <p><strong>Album</strong></p>
-                        </div>                        
-                        <div className="allSongs__each-artist">
+                        </SongItem>                        
+                        <SongItem>
                             <p><strong>Artist</strong></p>
-                        </div>
-                        <div className="allSongs__each-genre">
+                        </SongItem>
+                        <SongItem>
                             <p><strong>Genre</strong></p>
-                        </div>
-                        <div className="allSongs__each-fav">
+                        </SongItem>
+                        <div>
                             <p><strong>Favorite</strong></p>
                         </div>                        
-                    </article>
+                    </SongsHeaders>
                     
                     {displaySongs.length > 0 ? (
                         displaySongs.map((song) => {
@@ -77,43 +78,43 @@ const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }
                             const isFavorite = favorites.some(fav => fav.trackID === trackID);
 
                             return (
-                                <article key={trackID} className="allSongs__each-item">
-                                    <div className="allSongs__each-cover" >
+                                <EachSong key={trackID} className="allSongs__each-item">
+                                    <SongCover >
                                         <Link to={`/album/${albumID}`}>
                                             <img src={cover} alt={album}></img>                                        
                                         </Link>                                        
-                                    </div>
-                                    <div className="allSongs__each-track">
+                                    </SongCover>
+                                    <SongItem>
                                             <p>{track}</p>
-                                    </div>   
-                                    <div className="allSongs__each-album">
+                                    </SongItem>   
+                                    <SongItem>
                                         <Link to={`/album/${albumID}`}>
                                             <p>{album}</p>                                        
                                         </Link>                                       
-                                    </div>                        
-                                    <div className="allSongs__each-artist">
+                                    </SongItem>                        
+                                    <SongItem>
 
                                         <Link to={`/artist/${artistID}`}>
                                             <p>{artist}</p>
                                         </Link>
                                         
-                                    </div>
-                                    <div className="allSongs__each-genre">
+                                    </SongItem>
+                                    <SongItem>
                                         <p>{genre}</p>
 
-                                    </div>
+                                    </SongItem>
                                     <div className="allSongs__each-fav">
-                                        <button onClick={() => onAddFav(song)} ><img src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></button>
+                                        <FavButton onClick={() => onAddFav(song)} ><FavIcon src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></FavButton>
                                     </div>                        
-                                </article>
+                                </EachSong>
                 );
                         })
                     ) : (
                         <p className="error-message">No se encontraron resultados.</p>
                     )}
-                </div>
+                </SongsContainer>
             )}
-        </section>
+        </AllSongs>
     );
 };
 

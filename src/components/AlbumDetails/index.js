@@ -4,6 +4,8 @@ import useGetDetails from '../../hooks/useGetDetails.js';
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
 
+import {Album, AlbumContainer, AlbumCover, AlbumInfo, AlbumTracks, TrackDuration, Tracks, TracksHeader, TrackTitles, } from "./styles.js";
+import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
 
 const songTime = (millis) => {
   const minutes = Math.floor(millis / 60000);
@@ -28,47 +30,47 @@ const AlbumDetails = ({onAddFav, favorites}) => {
   const tracks = data ? data.slice(1) : [];
 
   return (
-    <section className='infoAlbum'>
-      <div className='infoAlbum__container'>         
+    <Album>
+      <AlbumContainer>         
         
           {albumInfo && (
-            <div className='infoAlbum__Artist'>
-              <img src={albumInfo.artworkUrl100.replace('100x100', '500x500')} alt={albumInfo.collectionName} />
+            <AlbumInfo>
+              <AlbumCover src={albumInfo.artworkUrl100.replace('100x100', '500x500')} alt={albumInfo.collectionName} />
               <h2>{albumInfo.collectionName}</h2>
               <p>{albumInfo.artistName}</p>
               <p>{albumInfo.releaseDate.slice(0, 10)}</p>
-            </div>
+            </AlbumInfo>
           )}
         
-        <div className='infoAlbum__tracks'>
-          <div className='infoAlbum__tracks-header'>
+        <AlbumTracks>
+          <TracksHeader>
             <h3>Canciones:</h3>
-          </div>        
+          </TracksHeader>        
           
           {tracks.map(item => {
             const isFavorite = favorites.some(fav => fav.trackID === item.trackID);
 
             return(
-            <article key={item.trackId} className='infoAlbum__tracks-each'>
-              <div className='infoAlbum__tracks-eachTitle'>
+            <Tracks key={item.trackId}>
+              <TrackTitles>
                 <p>
                   {item.trackNumber}. {item.track}
                 </p>
-              </div>
-              <div className='infoAlbum__tracks-eachDuration'>
+              </TrackTitles>
+              <TrackDuration>
                 <p>{songTime(item.trackTimeMillis)}</p>
-              </div>
-              <div className="allSongs__each-fav">
-                <button onClick={() => onAddFav(item)} ><img src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></button>
-              </div> 
-            </article>
+              </TrackDuration>
+              <FavBox onClick={() => onAddFav(item)}>
+                <FavButton><FavIcon src={isFavorite ? isFav:addFav} alt="favIcon"/></FavButton>
+              </FavBox>
+            </Tracks>
           )
             
           }
             )}
-        </div>
-      </div>
-    </section>
+        </AlbumTracks>
+      </AlbumContainer>
+    </Album>
   );
 };
 export default AlbumDetails;
