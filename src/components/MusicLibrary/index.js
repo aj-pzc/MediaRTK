@@ -1,52 +1,66 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
 import addPlaylist from '../Media/add.svg';
 import removePlaylist from '../Media/remove.svg';
 
-
 import { Link } from "react-router-dom";
 import { AddButton, AddIcon, AddPlaylist, AllSongs, EachSong, SearchBar, SearchBox, SearchBtn, SearchContainer, SongCover, SongItem, SongsContainer, SongsHeaders } from "./styles";
 import { FavBox, FavButton, FavIcon } from "../../Theme/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
-import { AddSong, RemoveSong } from "../../Redux/librayActions";
+import { addSong, removeSong } from "../../Redux/slices/playlists.slice";
+import { fetchMusic, searchReset } from "../../Redux/slices/search.slice";
+import { toggleFavorites } from "../../Redux/slices/favorites.slice";
 
-const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }) => {
+const MusicLibrary = () => {
+    const dispatch = useDispatch();
+    const {songs=[], loading, error} = useSelector(state => state.search);
+    const playlist = useSelector(state => state.playlist);
+    const favorites = useSelector(state => state.favorites);
+
     const [searchTerm, setSearchTerm] = useState("");
 
-    const displaySongs = songs.filter(song => {
-        const term = searchTerm.toLowerCase().trim();
+    useEffect(() =>{
+        return() =>{
+            dispatch(searchReset());
+        };
+        
+    }, [dispatch]);
+
+    const handleSearch = () =>{
+        if(searchTerm.trim() !== ""){
+            dispatch(fetchMusic(searchTerm.trim()));
+        }
+    };
+
+    
+
+    const displaySongs = (Array.isArray(songs) ? songs : []).filter(song => {
+        const term = searchTerm.toLowerCase();
         return (
             song.artist?.toLowerCase().includes(term) ||
             song.album?.toLowerCase().includes(term) ||
             song.genre?.toLowerCase().includes(term) ||
             song.track?.toLowerCase().includes(term)
         );
-    });
-
-    const apiSearch = () => {
-        if (searchTerm.trim() !== "") {
-            onSearch(searchTerm.trim()); 
-        }
-    };
-
-    const dispatch = useDispatch();
-
-    const playlist = useSelector(state => state);
+    }, [songs, searchTerm]);
+   
 
     const handleTogglePlaylist = (song, onList) =>{
 
         if(onList){
-            dispatch(RemoveSong(song.trackID));
+            dispatch(removeSong(song.trackID));
         } else{
             const songDetails ={
                 trackID: song.trackID,
                 track: song.track,
                 artist: song.artist,
+                artistID: song.artistID,
                 album: song.album,
+                albumID: song.albumID,
                 cover: song.cover
             }
-            dispatch(AddSong(songDetails))        
+            dispatch(addSong(songDetails))        
         };
     };
 
@@ -58,22 +72,23 @@ const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }
                     <SearchBar
                         type="text"
                         id="Searchbox" 
-                        placeholder="Filtra aquí o presiona Enter para buscar..." 
+                        placeholder="Presiona Enter para buscar..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && apiSearch()}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                     />                        
-                    <SearchBtn onClick={apiSearch} >
+                    <SearchBtn onClick={handleSearch} >
                         Buscar
                     </SearchBtn>                    
                 </SearchBox>
             </SearchContainer>
-            {isLoading ? (
-                <p className="loading-msg">Cargando biblioteca...</p>
-            ) : error ? (
+            {loading ? (
+                <p>Cargando biblioteca...</p>
+            ): error ? (
                 <p> {error}</p>
-
-            ):(
+            ): songs.length === 0 ? (
+                <p>Realiza una búsqueda para comenzar.</p>
+            ) : (
                 <SongsContainer>
 
                     <SongsHeaders >
@@ -108,7 +123,7 @@ const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }
                             const onList = playlist.some(added => added.trackID === trackID);
 
                             return (
-                                <EachSong key={trackID} className="allSongs__each-item">
+                                <EachSong key={trackID} >
                                     <SongCover >
                                         <Link to={`/album/${albumID}`}>
                                             <img src={cover} alt={album}></img>                                        
@@ -132,7 +147,10 @@ const MusicLibrary = ({ songs, onAddFav, favorites, onSearch, isLoading, error }
                                         <p>{genre}</p>
                                     </SongItem>
                                     <FavBox>
-                                        <FavButton onClick={() => onAddFav(song)} >
+                                        
+                                        <FavButton onClick={() => {
+                                            console.log("Objeto enviado al dispatch:", song);
+                                            dispatch(toggleFavorites(song))}} >
                                             <FavIcon src={isFavorite ? isFav:addFav} alt="favIcon"/>
                                         </FavButton>
                                     </FavBox>

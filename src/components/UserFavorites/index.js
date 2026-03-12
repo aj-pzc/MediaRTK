@@ -8,27 +8,31 @@ import addIcon from '../Media/add.svg';
 import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
 import { ListHeader, UserList, ListContainer, ListItem, ListItemHeader, ItemBox, Cover, Playlist,  AddButton, AddIcon} from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import { AddSong, RemoveSong } from "../../Redux/librayActions";
+import { addSong, removeSong } from "../../Redux/slices/playlists.slice";
+import { Link } from "react-router-dom";
+import { toggleFavorites } from "../../Redux/slices/favorites.slice";
 
-const UserFavorites = ({ favorites, onAddFav}) => {
+const UserFavorites = () => {
 
     const dispatch = useDispatch();
 
-    const playlist = useSelector(state => state);
+    const playlist = useSelector(state => state.playlist);
+    const favorites = useSelector(state => state.favorites);
+
+    const handleToggleFav = (song) => {
+        dispatch(toggleFavorites(song)); 
+    };
+
+    console.log("favorites:", favorites)
+    console.log("Playlist:", playlist)
 
     const handleTogglePlaylist = (song, onList) =>{
         if(onList){
-            dispatch(RemoveSong(song.trackID))
+            dispatch(removeSong(song.trackID))
 
         }else {
-            const songDetails ={
-                trackID: song.trackID,
-                track: song.track,
-                artist: song.artist,
-                album: song.album,
-                cover: song.cover
-            }
-            dispatch(AddSong (songDetails))
+           
+            dispatch(addSong (song))
         }   
     }
 
@@ -64,7 +68,7 @@ const UserFavorites = ({ favorites, onAddFav}) => {
                 {favorites && favorites.length > 0 ? (
                 favorites.map((song) => {
                     
-                    const {trackID, artist, album, cover, track} = song;
+                    const {trackID, artist, artistID, album, albumID, cover, track} = song;
                     const isFavorite = favorites.some(fav => fav.trackID === song.trackID);
                     const onList = playlist.some(added => added.trackID === trackID);
 
@@ -72,18 +76,26 @@ const UserFavorites = ({ favorites, onAddFav}) => {
                         
                         <ListItem key={trackID} >
                             <div >
-                                 <img src={cover} alt={album}></img>
+                                <Link to={`/album/${albumID}`}>
+                                    <img src={cover} alt={album}></img>
+                                </Link>
+                                 
                             </div>
                             <ItemBox >
                                 <p><strong>{track}</strong></p>
                             </ItemBox>
                             <ItemBox >
-                                <p>{artist}</p>
+                                <Link to={`/artist/${artistID}`}>
+                                    <p>{artist}</p>
+                                </Link>
+                                
                             </ItemBox>
                             <ItemBox >
-                                <p>{album}</p>
+                                <Link to={`/album/${albumID}`}>
+                                    <p>{album}</p>
+                                </Link>
                             </ItemBox>
-                            <FavBox onClick={() => onAddFav(song)}>
+                            <FavBox onClick={() => handleToggleFav(song)}>
                                 <FavButton><FavIcon src={isFavorite ? isFav:addFav} alt="favIcon" id="AddtoFav"/></FavButton>
                             </FavBox>
                             <Playlist>

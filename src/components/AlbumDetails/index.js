@@ -1,61 +1,56 @@
-import React from 'react';
-import { useParams } from 'react-router-dom'; 
-import useGetDetails from '../../hooks/useGetDetails.js';
+import React, {useEffect } from 'react';
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
 import addPlaylist from '../Media/add.svg';
 import removePlaylist from '../Media/remove.svg';
 
 
-import {AddButton, AddIcon, AddPlaylist, Album, AlbumContainer, AlbumCover, AlbumInfo, AlbumTracks, TrackDuration, Tracks, TracksHeader, TrackTitles, } from "./styles.js";
-import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
-
-
+import { Link, useParams } from 'react-router-dom'; 
+import { fetchDetails } from '../../Redux/slices/details.slice.js';
+import { addSong, removeSong } from '../../Redux/slices/playlists.slice.js';
 import { useDispatch, useSelector } from "react-redux";
-import { AddSong, RemoveSong } from "../../Redux/librayActions";
+import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
+import {AddButton, AddIcon, AddPlaylist, Album, AlbumContainer, AlbumCover, AlbumInfo, AlbumTracks, TrackDuration, Tracks, TracksHeader, TrackTitles, } from "./styles.js";
+import { toggleFavorites } from '../../Redux/slices/favorites.slice.js';
 
 const songTime = (millis) => {
-  const minutes = Math.floor(millis / 60000);
-  
+  if (!millis) return "0:00";
+  const minutes = Math.floor(millis / 60000);  
   let seconds = Math.floor((millis % 60000) / 1000);
 
-  if (seconds < 10) {
-    seconds = "0" + seconds;
-  }
-
-  return minutes + ":" + seconds;
+  return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 }
 
-const AlbumDetails = ({onAddFav, favorites}) => {
+const AlbumDetails = () => {
   const { id } = useParams();
-  const { data, isLoading, error } = useGetDetails(id, "song");
-
+  const { details, loading, error } = useSelector(state=> state.details);
   const dispatch = useDispatch();
+  const playlist = useSelector(state => state.playlist);
+  const favorites = useSelector(state => state.favorites);
 
-  const playlist = useSelector(state => state);
-
+  useEffect(() => {
+    dispatch(fetchDetails({id, entity: "song"}))
+  }, [dispatch, id]);
+ 
   const handleTogglePlaylist = (song, onList) =>{
-
     if(onList){
-        dispatch(RemoveSong(song.trackID));
+        dispatch(removeSong(song.trackID));
     } else{
-        const songDetails ={
-            trackID: song.trackID,
-            track: song.track,
-            artist: song.artist,
-            album: song.album,
-            cover: song.cover
-        }
-        dispatch(AddSong(songDetails))        
+        dispatch(addSong(song))        
     };
   };
 
-  if (isLoading) return <p>Cargando álbum...</p>;
-  if (error) return <p>Hubo un error.</p>;
-  
-  const albumInfo = data && data[0];
-  const tracks = data ? data.slice(1) : [];
+  const handleToggleFav = (song) => {
+    dispatch(toggleFavorites(song)); 
+  };
 
+  if (loading) return <p>Cargando álbum...</p>;
+  if (error) return <p>Hubo un error{error}.</p>;
+  if (!Array.isArray(details) || details.length === 0) return null;
+
+  const albumInfo = details[0];
+  const tracks = details.slice(1).filter(song => song && song.trackID);
+  console.log('artista:',details[1]);
   return (
     <Album>
       <AlbumContainer>         
@@ -63,13 +58,15 @@ const AlbumDetails = ({onAddFav, favorites}) => {
           {albumInfo && (
             <AlbumInfo>
               <AlbumCover 
-                src={albumInfo.artworkUrl100.replace('100x100', '500x500')} 
-                alt={albumInfo.collectionName} 
+                src={albumInfo?.artworkUrl100?.replace('100x100', '500x500') || 'placeholder.jpg'} 
+                alt={albumInfo?.collectionName || "Álbum"} 
               />
-
               <h2>{albumInfo.collectionName}</h2>
-              <p>{albumInfo.artistName}</p>
-              <p>{albumInfo.releaseDate.slice(0, 10)}</p>
+              <Link to={`/artist/${albumInfo.artistId}`}>
+                <p>{albumInfo.artistName}</p>
+              </Link>
+              <p>{albumInfo?.releaseDate ? albumInfo.releaseDate.slice(0, 10) : "Fecha desconocida"}</p>
+              
             </AlbumInfo>
           )}
         
@@ -83,7 +80,7 @@ const AlbumDetails = ({onAddFav, favorites}) => {
             const onList = playlist.some(added => added.trackID === song.trackID);
 
             return(
-            <Tracks key={song.trackId}>
+            <Tracks key={song.trackID}>
               <TrackTitles>
                 <p>
                   {song.trackNumber}. {song.track}
@@ -92,7 +89,7 @@ const AlbumDetails = ({onAddFav, favorites}) => {
               <TrackDuration>
                 <p>{songTime(song.trackTimeMillis)}</p>
               </TrackDuration>
-              <FavBox onClick={() => onAddFav(song)}>
+              <FavBox onClick={() => handleToggleFav(song)}>
                 <FavButton>
                   <FavIcon 
                     src={isFavorite ? isFav:addFav} 

@@ -3,19 +3,26 @@ import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
 import removeIcon from '../Media/remove.svg';
 import { FavButton, FavIcon,FavBox } from "../../Theme/GlobalStyles";
-import { ListHeader, UserList, ListContainer, ListItem, ListItemHeader, ItemBox, Cover, Playlist, RemoveButton, RemoveIcon, AddButton, AddIcon } from "./styles";
+import { ListHeader, UserList, ListContainer, ListItem, ListItemHeader, ItemBox, Cover, Playlist, AddButton, AddIcon } from "./styles";
 import { useSelector, useDispatch } from "react-redux";
-import { RemoveSong } from "../../Redux/librayActions";
+import { removeSong } from "../../Redux/slices/playlists.slice";
+import { Link } from "react-router-dom";
+import { toggleFavorites } from "../../Redux/slices/favorites.slice";
 
 
-const UserPlaylist = ({ favorites, onAddFav}) => {
+const UserPlaylist = () => {
 
-    const songs = useSelector(state => state);
-    console.log("Playlist:", songs)
+    const songs = useSelector(state => state.playlist);
+    const favorites = useSelector(state => state.favorites);
+
+
 
     const dispatch = useDispatch();
+    console.log("Playlist:", songs)
 
-
+    const handleToggleFav = (song) => {
+        dispatch(toggleFavorites(song)); 
+    };
 
     return (
         <UserList >
@@ -24,7 +31,6 @@ const UserPlaylist = ({ favorites, onAddFav}) => {
             </ListHeader>
 
             <ListContainer>
-
                 <ListItemHeader >
                         <Cover>
                             <p><strong>Album Cover</strong></p>
@@ -49,24 +55,30 @@ const UserPlaylist = ({ favorites, onAddFav}) => {
                 {songs.length === 0 ? <p>Tu Playlist Esta Vacia</p> : (
                 songs.map((song) => {
                     
-                    const {trackID, artist, album, cover, track} = song;
+                    const {trackID, artist, artistID, album, albumID, cover, track} = song;
                     const isFavorite = favorites.some(fav => fav.trackID === song.trackID);
                     
                     return(
                         <ListItem key={trackID} >
                             <Cover>
-                                 <img src={cover} alt={album}></img>
+                                <Link to={`/album/${albumID}`}>
+                                    <img src={cover} alt={album}></img>
+                                </Link>
                             </Cover>
                             <ItemBox >
                                 <p><strong>{track}</strong></p>
                             </ItemBox>
                             <ItemBox >
+                                <Link to={`/artist/${artistID}`}>
                                 <p>{artist}</p>
+                                </Link>
                             </ItemBox>
                             <ItemBox >
-                                <p>{album}</p>
+                                <Link to={`/album/${albumID}`}>
+                                    <p>{album}</p>
+                                </Link>
                             </ItemBox>
-                            <FavBox onClick={() => onAddFav(song)}>
+                            <FavBox onClick={() => handleToggleFav(song)}>
                                 <FavButton>
                                     <FavIcon 
                                         src={isFavorite ? isFav:addFav} 
@@ -75,7 +87,7 @@ const UserPlaylist = ({ favorites, onAddFav}) => {
                                 </FavButton>
                             </FavBox>
                             <Playlist>
-                                <AddButton onClick={() => dispatch(RemoveSong(trackID))}>
+                                <AddButton onClick={() => dispatch(removeSong(trackID))}>
                                     <AddIcon
                                         src={removeIcon}
                                         alt="Remove"

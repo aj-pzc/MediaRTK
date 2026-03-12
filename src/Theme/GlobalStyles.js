@@ -55,9 +55,8 @@ const FavIcon = styled.img`
 `;
 
 const FavBox = styled.div`
-    width: 10%;
-    height: fill-available;
     align-content: center;
+    padding: 0 10px;
 `;
 
 export default GlobalStyle;
