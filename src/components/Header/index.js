@@ -10,7 +10,6 @@ const Header = ({appName}) => {
 
     return (
         <HeaderBar>
-
             <MenuBox>
                 <MenuBtn onClick={toggleMenu}>  
                     <img src={menuIcon} alt="Menu"/>

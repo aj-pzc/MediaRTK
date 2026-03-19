@@ -5,7 +5,6 @@
         initialState: [],
         reducers: {
             toggleFavorites:(state, action) =>{
-            console.log("¡El reducer recibió la acción con payload:", action.payload);
                 const song = action.payload;
                 if (!song) return;
                 

@@ -12,6 +12,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-redux": "^9.2.0",
+    "react-router": "^7.13.1",
     "react-router-dom": "^7.13.1",
     "redux": "^5.0.1",
     "reset": "^0.1.0",
@@ -23,7 +24,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -47,12 +49,18 @@
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
     "autoprefixer": "^10.4.27",
-    "babel-loader": "^10.0.0",
     "html-webpack-plugin": "^5.6.6",
-    "jest": "^27.5.1",
+    "jest-fetch-mock": "^3.0.3",
     "postcss": "^8.5.8",
     "react-scripts": "^5.0.1",
+    "react-test-renderer": "^19.2.4",
     "tailwindcss": "^3.4.19",
     "webpack-dev-server": "^5.2.3"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^react-router-dom$": "<rootDir>/node_modules/react-router-dom/dist/index.js",
+      "^axios$": "axios/dist/node/axios.cjs"
+    }
   }
 }

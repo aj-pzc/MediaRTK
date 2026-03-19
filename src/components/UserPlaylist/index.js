@@ -18,8 +18,6 @@ const UserPlaylist = () => {
 
 
     const dispatch = useDispatch();
-    console.log("Playlist:", songs)
-
     const handleToggleFav = (song) => {
         dispatch(toggleFavorites(song)); 
     };
@@ -79,11 +77,11 @@ const UserPlaylist = () => {
                                 </Link>
                             </ItemBox>
                             <FavBox onClick={() => handleToggleFav(song)}>
-                                <FavButton>
-                                    <FavIcon 
-                                        src={isFavorite ? isFav:addFav} 
-                                        alt="favIcon"
-                                    />
+                                <FavButton onClick={() => 
+                                    dispatch(toggleFavorites(song))} 
+                                    aria-label="Favorites"    
+                                >
+                                    <FavIcon src={isFavorite ? isFav:addFav} alt="favIcon"/>
                                 </FavButton>
                             </FavBox>
                             <Playlist>
@@ -91,6 +89,7 @@ const UserPlaylist = () => {
                                     <AddIcon
                                         src={removeIcon}
                                         alt="Remove"
+                                        aria-label="Playlist"
                                      />
                                 </AddButton>
                             </Playlist>

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import addFav from '../Media/fav.svg';
 import isFav from '../Media/fav-added.svg';
-import addPlaylist from '../Media/add.svg';
-import removePlaylist from '../Media/remove.svg';
+import addToPlaylist from '../Media/add.svg';
+import removeFromPlaylist from '../Media/remove.svg';
 
 import { Link } from "react-router-dom";
-import { AddButton, AddIcon, AddPlaylist, AllSongs, EachSong, SearchBar, SearchBox, SearchBtn, SearchContainer, SongCover, SongItem, SongsContainer, SongsHeaders } from "./styles";
+import { AddButton, AddIcon, AddPlaylist, AllSongs, EachSong, SearchBar, SearchBox, SearchBtn, SearchContainer, SongCover, SongItem, SongsContainer, SongsHeaders } from "./styles.js";
 import { FavBox, FavButton, FavIcon } from "../../Theme/GlobalStyles";
 import { useDispatch, useSelector } from "react-redux";
 import { addSong, removeSong } from "../../Redux/slices/playlists.slice";
@@ -63,7 +63,7 @@ const MusicLibrary = () => {
             dispatch(addSong(songDetails))        
         };
     };
-
+    
     return (
         <AllSongs >
             <SearchContainer >
@@ -71,7 +71,7 @@ const MusicLibrary = () => {
                 <SearchBox>
                     <SearchBar
                         type="text"
-                        id="Searchbox" 
+                        className="Searchbox" 
                         placeholder="Presiona Enter para buscar..." 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -148,15 +148,20 @@ const MusicLibrary = () => {
                                     </SongItem>
                                     <FavBox>
                                         
-                                        <FavButton onClick={() => {
-                                            console.log("Objeto enviado al dispatch:", song);
-                                            dispatch(toggleFavorites(song))}} >
+                                        <FavButton onClick={() => 
+                                            dispatch(toggleFavorites(song))} 
+                                            aria-label="Favorites"    
+                                        >
                                             <FavIcon src={isFavorite ? isFav:addFav} alt="favIcon"/>
                                         </FavButton>
                                     </FavBox>
                                     <AddPlaylist>
-                                        <AddButton onClick={() => handleTogglePlaylist(song, onList)}>
-                                            <AddIcon src={onList ? removePlaylist:addPlaylist} alt="AddPlaylist"/>
+                                        <AddButton onClick={() => 
+                                            handleTogglePlaylist(song, onList)}
+                                            
+                                            
+                                        >
+                                            <AddIcon src={onList ? removeFromPlaylist:addToPlaylist} alt="AddPlaylist"/>
                                         </AddButton>
                                     </AddPlaylist>                        
                                 </EachSong>

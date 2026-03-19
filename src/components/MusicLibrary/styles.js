@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const AllSongs = styled.section`
+export const AllSongs = styled.section`
     background-color: ${props => props.theme.colors.primary};
     border-radius: 8px;
     padding: 0 20px 20px 20px;
@@ -12,7 +12,7 @@ const AllSongs = styled.section`
     overflow-y: ${props => props.theme.layering.overflow};
 `;
 
-const SearchContainer = styled.div`
+export const SearchContainer = styled.div`
     background-color: ${props => props.theme.colors.primary};
     max-width: 110rem;
     text-align: center; 
@@ -29,7 +29,7 @@ const SearchContainer = styled.div`
     }
 `;
 
-const SearchBox = styled.div`
+export const SearchBox = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -39,7 +39,7 @@ const SearchBox = styled.div`
 `
 
 
-const SearchBtn = styled.button`
+export const SearchBtn = styled.button`
     background-color: ${props => props.theme.colors.background};
     color:${props => props.theme.colors.textInvtd};
     font-size: 1.1rem;
@@ -59,7 +59,7 @@ const SearchBtn = styled.button`
         background-color: ${props => props.theme.colors.btnActive};
     }
 `;
-const SearchBar = styled.input`
+export const SearchBar = styled.input`
     border: 1px solid #ccc;
     border-radius: 25px;
     width: 75rem;
@@ -68,7 +68,7 @@ const SearchBar = styled.input`
     padding-left: 15px;
 `;
 
-const SongsHeaders = styled.article`
+export const SongsHeaders = styled.article`
     position: sticky;  
     top:120px;
     z-index: 1000;
@@ -85,14 +85,14 @@ const SongsHeaders = styled.article`
     align-items: center;
 `;
 
-const SongsContainer = styled.div`
+export const SongsContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
 
 
-const EachSong = styled.div`
+export const EachSong = styled.article`
     padding: 0;
     margin: 5px;
     width: auto;
@@ -107,7 +107,7 @@ const EachSong = styled.div`
     }
 `;
 
-const SongCover = styled.div`
+export const SongCover = styled.div`
     width: 10%;
     display: flex;
     justify-content: center;
@@ -117,48 +117,31 @@ const SongCover = styled.div`
     }
 `;
 
-const SongItem = styled.div`
+export const SongItem = styled.div`
     width: 15%;
     align-content: center;
 
 `;
-const AddPlaylist = styled.div`
+export const AddPlaylist = styled.div`
     width: 10%;
     align-content: center;
 `;
 
-const AddButton = styled.button`
+export const AddButton = styled.button`
     padding:0;
     margin:0;
     border:none;
     background-color: ${props => props.theme.colors.none};
-        &:hover{
-            cursor:pointer;
-            transform:translateY(-3px);
-        }
-        &:active{
-            transform: scale(0.7);
-        }
+    &:hover{
+        cursor:pointer;
+        transform:translateY(-3px);
+    }
+    &:active{
+        transform: scale(0.7);
     }
 `;
 
-const AddIcon = styled.img`
+export const AddIcon = styled.img`
     width: 30px;
     height: auto;
 `;
-
-export {
-    AllSongs,
-    SearchBtn,
-    SearchBar,
-    SearchBox,
-    SearchContainer,
-    SongsHeaders,
-    SongsContainer,
-    EachSong,
-    SongCover,
-    SongItem,
-    AddPlaylist,
-    AddButton,
-    AddIcon
-}

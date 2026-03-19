@@ -19,7 +19,7 @@ export const fetchMusic = createAsyncThunk(
                 artist: item.artistName || "Artista Desconocido",
                 genre: item.primaryGenreName || "Varios"                        
             }));
-
+            console.log(renamedData)
             return(renamedData);
             
         } catch (error){
@@ -31,7 +31,7 @@ export const fetchMusic = createAsyncThunk(
 const searchSlice = createSlice({
     name:'searchAPI',
     initialState:{
-        results:[],
+        songs:[],
         loading: false,
         error: null,
     },

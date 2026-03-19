@@ -1,9 +1,7 @@
-import reset from "styled-components";
 import styled, { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-    ${reset}
-    
+
     *, body{
         font-family: ${props => props.theme.fonts.mainFont};
         box-sizing: border-box;
@@ -35,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
-const FavButton = styled.button`
+export const FavButton = styled.button`
     padding:0;
     margin:0;
     border:none;
@@ -47,22 +45,15 @@ const FavButton = styled.button`
         &:active{
             transform: scale(0.7);
         }
-    }
 `;
-const FavIcon = styled.img`
+export const FavIcon = styled.img`
     width: 30px;
     height: auto;
 `;
 
-const FavBox = styled.div`
+export const FavBox = styled.div`
     align-content: center;
     padding: 0 10px;
 `;
 
 export default GlobalStyle;
-
-export {
-    FavButton,
-    FavIcon,
-    FavBox
-}
